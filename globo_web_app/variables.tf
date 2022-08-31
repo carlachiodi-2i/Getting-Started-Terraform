@@ -16,22 +16,16 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "vpc_cidr_block" {
-  type        = string
-  description = "CIDR block for VPC"
-  default     = "10.0.0.0/16"
+variable "vpc_subnet_cidr_block" {
+  type        = lis(string)
+  description = "CIDR block for Subnets in VPC"
+  default     = ["10.0.0.0/16", "10.0.0.0/24"]
 }
 
 variable "enable_dns_hostnames" {
   type        = bool
   description = "Enable DNS hostnames"
   default     = true
-}
-
-variable "vpc_subnet1_cidr_block" {
-  type        = string
-  description = "CIDR block for Subnet1 for VPC"
-  default     = "10.0.0.0/24"
 }
 
 variable "company" {
