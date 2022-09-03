@@ -17,21 +17,13 @@ variable "vpc_subnets_cidr_block" {
 }
 
 variable "vpc_cidr_block" {
-  type        = string
-  description = "CIDR block for VPC"
-  default     = "10.0.0.0/16"
+  type        = map(string)
+  description = "map of CIDR block for VPC"
 }
 
 variable "vpc_subnet_count" {
-  type        = number
+  type        = map(number)
   description = "Number of subnets to create"
-  default     = 2
-}
-
-variable "ngix_count" {
-  type        = number
-  description = "Number of ngix instances to create"
-  default     = 2
 }
 
 variable "enable_dns_hostnames" {
@@ -54,4 +46,14 @@ variable "project" {
 variable "billing_code" {
   type        = string
   description = "Billing code"
+}
+
+variable "instance_type" {
+  type        = map(string)
+  description = "Type of EC2 instance"
+}
+
+variable "instance_count" {
+  type        = map(number)
+  description = "Number of instances to create in VPC"
 }
