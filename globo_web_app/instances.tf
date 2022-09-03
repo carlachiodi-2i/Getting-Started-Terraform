@@ -3,16 +3,16 @@ resource "aws_instance" "nginx_instances" {
   count                  = var.ngix_count
   ami                    = nonsensitive(data.aws_ssm_parameter.ami.value)
   instance_type          = "t2.micro"
-  subnet_id              = aws_subnet.subnets[(count.index % var.vpc_subnet_count)].id
+  subnet_id              = module.vpc.public_subnets[(count.index % var.vpc_subnet_count)]
   vpc_security_group_ids = [aws_security_group.nginx-sg.id]
-  iam_instance_profile   = aws_iam_instance_profile.nginx_profile.name
+  iam_instance_profile   = module.s3_bucket.instance_profile.name
   depends_on = [
-    aws_iam_role_policy.allow_s3_all
+    module.s3_bucket
   ]
 
   user_data = templatefile("${path.module}/startup_script.tpl", {
-    s3_bucket_name = aws_s3_bucket.web_bucket.id
+    s3_bucket_name = module.s3_bucket.web_bucket.id
   })
 
-  tags = local.common_tags
+  tags = merge(local.common_tags, { Name = "${local.name_prefix}-vpc" })
 }
